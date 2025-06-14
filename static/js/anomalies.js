@@ -183,6 +183,13 @@ class AnomaliesPage {
         }
     }
 
+    getRiskIndicatorClass(score) {
+        if (score < 0.25) return 'risk-low';
+        if (score < 0.5) return 'risk-medium';
+        if (score < 0.75) return 'risk-high';
+        return 'risk-critical';
+    }
+
     updatePagination(total) {
         const pagination = document.getElementById('pagination');
         const totalPages = Math.ceil(total / this.limit);
