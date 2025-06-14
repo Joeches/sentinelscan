@@ -159,6 +159,11 @@ def anomalies_page():
     """Anomalies list page"""
     return render_template('anomalies.html')
 
+@app.route('/analytics')
+def analytics_page():
+    """Enterprise analytics page"""
+    return render_template('analytics.html')
+
 @app.route('/api/transactions/simulate', methods=['POST'])
 def simulate_transaction():
     """Simulate a transaction and detect anomalies"""

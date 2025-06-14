@@ -6,8 +6,15 @@ class Dashboard {
         this.autoRefreshEnabled = false;
         this.riskDistributionChart = null;
         this.riskTimelineChart = null;
+        this.hourlyRiskChart = null;
+        this.volumeRiskChart = null;
+        this.riskForecastChart = null;
         this.riskMeter = null;
         this.transactionData = [];
+        this.alertSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvGMcBjuT2v'); // Subtle alert sound
+        this.alertsEnabled = true;
+        this.criticalThreshold = 0.8;
+        this.highThreshold = 0.6;
         this.init();
     }
 
@@ -15,6 +22,7 @@ class Dashboard {
         this.loadDashboardStats();
         this.setupEventListeners();
         this.initializeCharts();
+        this.initializeAdvancedFeatures();
         this.startAutoRefresh();
         this.generateRandomTransactionData();
     }
@@ -35,6 +43,27 @@ class Dashboard {
         
         const form = document.getElementById('transactionForm');
         form.appendChild(generateBtn);
+
+        // Chart view switchers
+        document.getElementById('chartView1').addEventListener('click', () => this.switchChartView(1));
+        document.getElementById('chartView2').addEventListener('click', () => this.switchChartView(2));
+        document.getElementById('chartView3').addEventListener('click', () => this.switchChartView(3));
+
+        // Threshold controls
+        document.getElementById('criticalThreshold').addEventListener('input', (e) => {
+            this.criticalThreshold = parseFloat(e.target.value);
+            document.getElementById('criticalValue').textContent = Math.round(this.criticalThreshold * 100) + '%';
+        });
+
+        document.getElementById('highThreshold').addEventListener('input', (e) => {
+            this.highThreshold = parseFloat(e.target.value);
+            document.getElementById('highValue').textContent = Math.round(this.highThreshold * 100) + '%';
+        });
+
+        // Alert toggle
+        document.getElementById('alertToggle').addEventListener('change', (e) => {
+            this.alertsEnabled = e.target.checked;
+        });
     }
 
     generateRandomTransactionData() {
@@ -147,6 +176,9 @@ class Dashboard {
         // Update transaction data and visualizations
         this.transactionData.push(result);
         this.updateRiskVisualizations(this.transactionData);
+        
+        // Check for alerts
+        this.checkAndTriggerAlert(result);
     }
 
     addToAnomalyFeed(anomaly) {
@@ -489,6 +521,361 @@ class Dashboard {
         } else {
             riskLevelElement.textContent = 'CRITICAL';
             riskLevelElement.className = 'risk-level-critical';
+        }
+    }
+
+    initializeAdvancedFeatures() {
+        this.initializeRiskForecast();
+        this.initializeHourlyRiskChart();
+        this.initializeVolumeRiskChart();
+        this.initializeGeographicMap();
+        this.updateModelConfidence();
+        this.updateRiskVelocity();
+    }
+
+    initializeRiskForecast() {
+        const ctx = document.getElementById('riskForecastChart').getContext('2d');
+        this.riskForecastChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Now', '+15m', '+30m', '+45m', '+60m'],
+                datasets: [{
+                    label: 'Predicted Risk',
+                    data: [0.3, 0.35, 0.4, 0.38, 0.42],
+                    borderColor: '#17a2b8',
+                    backgroundColor: 'rgba(23, 162, 184, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#ffffff', font: { size: 10 } },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 1,
+                        ticks: { 
+                            color: '#ffffff',
+                            font: { size: 10 },
+                            callback: function(value) {
+                                return (value * 100).toFixed(0) + '%';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+    }
+
+    initializeHourlyRiskChart() {
+        const ctx = document.getElementById('hourlyRiskChart').getContext('2d');
+        const hours = Array.from({length: 24}, (_, i) => i + 'h');
+        const riskData = hours.map(() => Math.random() * 0.6 + 0.2);
+        
+        this.hourlyRiskChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: hours,
+                datasets: [{
+                    label: 'Hourly Risk Pattern',
+                    data: riskData,
+                    backgroundColor: riskData.map(val => 
+                        val > 0.7 ? '#dc3545' : 
+                        val > 0.5 ? '#ffc107' : '#28a745'
+                    ),
+                    borderColor: '#343a40',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '24-Hour Risk Pattern Analysis',
+                        color: '#ffffff'
+                    },
+                    legend: { labels: { color: '#ffffff' } }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#ffffff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 1,
+                        ticks: { 
+                            color: '#ffffff',
+                            callback: function(value) {
+                                return (value * 100).toFixed(0) + '%';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+    }
+
+    initializeVolumeRiskChart() {
+        const ctx = document.getElementById('volumeRiskCorrelationChart').getContext('2d');
+        
+        this.volumeRiskChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Volume vs Risk Correlation',
+                    data: [],
+                    backgroundColor: 'rgba(0, 123, 255, 0.6)',
+                    borderColor: '#007bff',
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Transaction Volume vs Risk Score',
+                        color: '#ffffff'
+                    },
+                    legend: { labels: { color: '#ffffff' } }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Transaction Amount ($)',
+                            color: '#ffffff'
+                        },
+                        ticks: { color: '#ffffff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Risk Score',
+                            color: '#ffffff'
+                        },
+                        beginAtZero: true,
+                        max: 1,
+                        ticks: { 
+                            color: '#ffffff',
+                            callback: function(value) {
+                                return (value * 100).toFixed(0) + '%';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+    }
+
+    initializeGeographicMap() {
+        const canvas = document.getElementById('worldMap');
+        const ctx = canvas.getContext('2d');
+        this.drawWorldMap(ctx);
+    }
+
+    drawWorldMap(ctx) {
+        // Clear canvas
+        ctx.clearRect(0, 0, 300, 250);
+        
+        // Draw simplified world map outline
+        ctx.strokeStyle = '#495057';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = '#2d3436';
+        
+        // Simplified continent shapes
+        const continents = [
+            {x: 50, y: 80, w: 40, h: 30}, // North America
+            {x: 100, y: 100, w: 30, h: 50}, // South America
+            {x: 150, y: 70, w: 60, h: 40}, // Europe/Asia
+            {x: 200, y: 110, w: 25, h: 35}, // Africa
+            {x: 230, y: 150, w: 40, h: 25} // Australia
+        ];
+        
+        continents.forEach(continent => {
+            ctx.fillRect(continent.x, continent.y, continent.w, continent.h);
+            ctx.strokeRect(continent.x, continent.y, continent.w, continent.h);
+        });
+        
+        // Add risk points
+        this.updateGeoRiskPoints();
+    }
+
+    updateGeoRiskPoints() {
+        const mapContainer = document.getElementById('geoRiskMap');
+        // Clear existing points
+        const existingPoints = mapContainer.querySelectorAll('.geo-risk-point');
+        existingPoints.forEach(point => point.remove());
+        
+        // Sample risk locations based on transaction data
+        const riskLocations = [
+            {x: 60, y: 90, risk: 'high'},   // USA high risk
+            {x: 170, y: 85, risk: 'medium'}, // Europe medium risk
+            {x: 210, y: 120, risk: 'high'},  // Africa high risk
+            {x: 250, y: 100, risk: 'low'},   // Asia low risk
+        ];
+        
+        riskLocations.forEach(location => {
+            const point = document.createElement('div');
+            point.className = `geo-risk-point geo-risk-${location.risk}`;
+            point.style.left = location.x + 'px';
+            point.style.top = location.y + 'px';
+            mapContainer.appendChild(point);
+        });
+    }
+
+    switchChartView(viewNumber) {
+        // Hide all chart containers
+        for (let i = 1; i <= 3; i++) {
+            document.getElementById(`chartContainer${i}`).style.display = 'none';
+            document.getElementById(`chartView${i}`).classList.remove('active');
+        }
+        
+        // Show selected container
+        document.getElementById(`chartContainer${viewNumber}`).style.display = 'block';
+        document.getElementById(`chartView${viewNumber}`).classList.add('active');
+        
+        // Update charts based on current data
+        if (viewNumber === 3 && this.transactionData.length > 0) {
+            this.updateVolumeRiskCorrelation();
+        }
+    }
+
+    updateVolumeRiskCorrelation() {
+        const data = this.transactionData.map(transaction => ({
+            x: transaction.amount,
+            y: transaction.anomaly_score
+        }));
+        
+        this.volumeRiskChart.data.datasets[0].data = data;
+        this.volumeRiskChart.update();
+    }
+
+    updateModelConfidence() {
+        // Simulate model confidence based on transaction volume
+        const confidence = Math.min(95, 85 + this.transactionData.length * 2);
+        document.getElementById('modelConfidence').style.width = confidence + '%';
+        document.getElementById('confidenceText').textContent = confidence.toFixed(1) + '% Accurate';
+        
+        if (confidence > 90) {
+            document.getElementById('modelConfidence').className = 'progress-bar bg-success';
+            document.getElementById('confidenceText').className = 'text-success';
+        } else if (confidence > 80) {
+            document.getElementById('modelConfidence').className = 'progress-bar bg-warning';
+            document.getElementById('confidenceText').className = 'text-warning';
+        } else {
+            document.getElementById('modelConfidence').className = 'progress-bar bg-danger';
+            document.getElementById('confidenceText').className = 'text-danger';
+        }
+    }
+
+    updateRiskVelocity() {
+        if (this.transactionData.length < 2) return;
+        
+        // Calculate risk velocity (change over time)
+        const recent = this.transactionData.slice(-5);
+        const older = this.transactionData.slice(-10, -5);
+        
+        if (older.length === 0) return;
+        
+        const recentAvg = recent.reduce((sum, t) => sum + t.anomaly_score, 0) / recent.length;
+        const olderAvg = older.reduce((sum, t) => sum + t.anomaly_score, 0) / older.length;
+        
+        const velocity = ((recentAvg - olderAvg) / olderAvg) * 100;
+        
+        const icon = document.getElementById('riskVelocityIcon');
+        const text = document.getElementById('riskVelocityText');
+        
+        if (velocity > 0) {
+            icon.className = 'fas fa-arrow-up text-danger me-2';
+            text.className = 'text-danger';
+            text.textContent = `+${velocity.toFixed(1)}% (Last Hour)`;
+        } else {
+            icon.className = 'fas fa-arrow-down text-success me-2';
+            text.className = 'text-success';
+            text.textContent = `${velocity.toFixed(1)}% (Last Hour)`;
+        }
+    }
+
+    checkAndTriggerAlert(transaction) {
+        if (!this.alertsEnabled) return;
+        
+        const score = transaction.anomaly_score;
+        let alertLevel = null;
+        
+        if (score >= this.criticalThreshold) {
+            alertLevel = 'critical';
+        } else if (score >= this.highThreshold) {
+            alertLevel = 'high';
+        }
+        
+        if (alertLevel) {
+            this.addAlert(transaction, alertLevel);
+            if (this.alertsEnabled) {
+                this.alertSound.play().catch(() => {}); // Ignore audio errors
+            }
+        }
+    }
+
+    addAlert(transaction, level) {
+        const alertFeed = document.getElementById('alertFeed');
+        
+        // Remove "monitoring" message if present
+        if (alertFeed.querySelector('.text-center')) {
+            alertFeed.innerHTML = '';
+        }
+        
+        const alertItem = document.createElement('div');
+        alertItem.className = `alert-item ${level}`;
+        
+        const levelText = level === 'critical' ? 'CRITICAL' : 'HIGH RISK';
+        const levelIcon = level === 'critical' ? 'fas fa-exclamation-triangle' : 'fas fa-exclamation-circle';
+        const levelColor = level === 'critical' ? 'text-danger' : 'text-warning';
+        
+        alertItem.innerHTML = `
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="${levelColor} mb-1">
+                        <i class="${levelIcon} me-1"></i>
+                        ${levelText} ALERT
+                    </h6>
+                    <small class="text-muted">
+                        ${transaction.transaction_id} • ${transaction.currency} ${transaction.amount.toFixed(2)}
+                        <br>
+                        ${transaction.location_country} • ${transaction.transaction_type}
+                    </small>
+                </div>
+                <div class="text-end">
+                    <span class="badge ${level === 'critical' ? 'bg-danger' : 'bg-warning'}">
+                        ${(transaction.anomaly_score * 100).toFixed(1)}%
+                    </span>
+                    <br>
+                    <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+                </div>
+            </div>
+        `;
+        
+        alertFeed.insertBefore(alertItem, alertFeed.firstChild);
+        
+        // Limit to 10 alerts
+        while (alertFeed.children.length > 10) {
+            alertFeed.removeChild(alertFeed.lastChild);
         }
     }
 

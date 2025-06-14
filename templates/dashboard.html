@@ -84,24 +84,127 @@
         </div>
     </div>
 
-    <!-- Risk Visualization Charts -->
+    <!-- Advanced Analytics Section -->
     <div class="row mb-4">
-        <div class="col-lg-8 mb-4">
-            <div class="card bg-dark border-secondary">
+        <!-- Real-time Alert System -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-bell text-warning me-2"></i>
+                        Real-time Alerts
+                    </h5>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="alertToggle" checked>
+                        <label class="form-check-label text-muted" for="alertToggle">Sound</label>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="alertFeed" class="alert-feed" style="max-height: 300px; overflow-y: auto;">
+                        <div class="text-center text-muted py-4">
+                            <i class="fas fa-shield-alt fa-2x mb-2"></i>
+                            <p>System monitoring...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Prediction & Confidence -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary h-100">
                 <div class="card-header border-secondary">
                     <h5 class="text-white mb-0">
-                        <i class="fas fa-chart-line text-primary me-2"></i>
-                        Real-time Risk Visualization
+                        <i class="fas fa-brain text-info me-2"></i>
+                        AI Confidence & Prediction
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <canvas id="riskDistributionChart" width="400" height="300"></canvas>
+                    <div class="mb-3">
+                        <h6 class="text-muted">Model Confidence</h6>
+                        <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress-bar bg-success" id="modelConfidence" style="width: 95%"></div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <canvas id="riskTimelineChart" width="400" height="300"></canvas>
+                        <small class="text-success" id="confidenceText">95.2% Accurate</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-muted">Next Hour Risk Forecast</h6>
+                        <canvas id="riskForecastChart" width="300" height="150"></canvas>
+                    </div>
+                    
+                    <div class="risk-velocity">
+                        <h6 class="text-muted">Risk Velocity</h6>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-arrow-up text-danger me-2" id="riskVelocityIcon"></i>
+                            <span class="text-danger" id="riskVelocityText">+12% (Last Hour)</span>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Geographic Risk Map -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-globe text-primary me-2"></i>
+                        Geographic Risk Distribution
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="geoRiskMap" style="height: 250px; background: #2d3436; border-radius: 8px; position: relative;">
+                        <canvas id="worldMap" width="300" height="250"></canvas>
+                    </div>
+                    <div class="mt-3">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <small class="text-muted">High Risk Regions</small>
+                                <div class="text-danger fw-bold" id="highRiskRegions">3</div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Safe Regions</small>
+                                <div class="text-success fw-bold" id="safeRegions">7</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Risk Visualization Charts -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        Advanced Risk Analytics
+                    </h5>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-light active" id="chartView1">Distribution</button>
+                        <button type="button" class="btn btn-sm btn-outline-light" id="chartView2">Timeline</button>
+                        <button type="button" class="btn btn-sm btn-outline-light" id="chartView3">Correlation</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="chartContainer1">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <canvas id="riskDistributionChart" width="400" height="300"></canvas>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <canvas id="riskTimelineChart" width="400" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container" id="chartContainer2" style="display: none;">
+                        <canvas id="hourlyRiskChart" width="800" height="300"></canvas>
+                    </div>
+                    <div class="chart-container" id="chartContainer3" style="display: none;">
+                        <canvas id="volumeRiskCorrelationChart" width="800" height="300"></canvas>
                     </div>
                 </div>
             </div>
@@ -112,15 +215,38 @@
                 <div class="card-header border-secondary">
                     <h5 class="text-white mb-0">
                         <i class="fas fa-thermometer-half text-warning me-2"></i>
-                        Risk Meter
+                        Risk Meter & Controls
                     </h5>
                 </div>
-                <div class="card-body d-flex align-items-center justify-content-center">
-                    <div class="risk-meter-container">
+                <div class="card-body">
+                    <div class="risk-meter-container text-center mb-4">
                         <canvas id="riskMeter" width="200" height="200"></canvas>
-                        <div class="text-center mt-3">
+                        <div class="mt-3">
                             <h6 class="text-muted">Current Risk Level</h6>
                             <h4 id="riskLevelText" class="text-success">LOW</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Risk Threshold Controls -->
+                    <div class="risk-controls">
+                        <h6 class="text-muted mb-3">Risk Thresholds</h6>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">Critical Alert</label>
+                            <input type="range" class="form-range" id="criticalThreshold" min="0.5" max="1.0" step="0.05" value="0.8">
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">50%</small>
+                                <small class="text-danger" id="criticalValue">80%</small>
+                                <small class="text-muted">100%</small>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted">High Risk Alert</label>
+                            <input type="range" class="form-range" id="highThreshold" min="0.3" max="0.8" step="0.05" value="0.6">
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">30%</small>
+                                <small class="text-warning" id="highValue">60%</small>
+                                <small class="text-muted">80%</small>
+                            </div>
                         </div>
                     </div>
                 </div>
