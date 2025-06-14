@@ -149,6 +149,7 @@ class AnomaliesPage {
                         ${anomaly.device_info}
                     </td>
                     <td>
+                        <span class="risk-indicator ${this.getRiskIndicatorClass(anomaly.anomaly_score)}"></span>
                         <span class="${scoreClass}">
                             ${(anomaly.anomaly_score * 100).toFixed(1)}%
                         </span>
