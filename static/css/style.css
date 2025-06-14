@@ -284,10 +284,36 @@ body {
     color: #ffffff;
 }
 
-/* Responsive adjustments */
+/* Mobile-First Responsive Design */
+@media (max-width: 1200px) {
+    .chart-container canvas {
+        height: 250px !important;
+    }
+    
+    .risk-meter-container canvas {
+        width: 150px !important;
+        height: 150px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    
+    .card-header h5 {
+        font-size: 1rem;
+    }
+    
+    .btn-group .btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+}
+
 @media (max-width: 768px) {
     .container-fluid {
-        padding: 15px;
+        padding: 10px;
     }
     
     .card-body {
@@ -301,6 +327,212 @@ body {
     .btn {
         padding: 8px 16px;
         font-size: 0.875rem;
+    }
+    
+    /* Mobile chart optimizations */
+    .chart-container {
+        height: 200px;
+    }
+    
+    .chart-container canvas {
+        height: 200px !important;
+    }
+    
+    /* Mobile-friendly stats cards */
+    .row.mb-4 .col-md-3 {
+        margin-bottom: 1rem;
+    }
+    
+    /* Simplified mobile navigation */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-group .btn {
+        border-radius: 4px !important;
+        margin-bottom: 2px;
+    }
+    
+    /* Mobile risk meter */
+    .risk-meter-container {
+        transform: scale(0.8);
+    }
+    
+    /* Mobile alert feed */
+    .alert-feed {
+        max-height: 200px;
+    }
+    
+    .alert-item {
+        padding: 8px;
+        font-size: 0.875rem;
+    }
+    
+    /* Mobile form optimizations */
+    .form-control, .form-select {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Mobile geographic map */
+    #geoRiskMap {
+        height: 200px !important;
+    }
+    
+    #worldMap {
+        width: 250px !important;
+        height: 200px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Extra small mobile devices */
+    .container-fluid {
+        padding: 8px;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .card-body {
+        padding: 12px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+    }
+    
+    h5 {
+        font-size: 1rem;
+    }
+    
+    /* Single column layout for smallest screens */
+    .row > [class*="col-"] {
+        margin-bottom: 1rem;
+    }
+    
+    /* Simplified table for mobile */
+    .table td, .table th {
+        padding: 8px 4px;
+        font-size: 0.8rem;
+    }
+    
+    /* Mobile transaction form */
+    .transaction-form .row {
+        margin: 0;
+    }
+    
+    .transaction-form .col-md-6 {
+        padding: 0 5px;
+        margin-bottom: 10px;
+    }
+    
+    /* Mobile analytics adjustments */
+    .enterprise-badge {
+        display: none;
+    }
+    
+    .btn-group {
+        gap: 4px;
+    }
+    
+    /* Touch-friendly elements */
+    .btn {
+        min-height: 44px;
+        touch-action: manipulation;
+    }
+    
+    .form-control, .form-select {
+        min-height: 44px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .card:hover {
+        transform: none;
+    }
+    
+    .btn:hover {
+        transform: none;
+    }
+    
+    /* Larger touch targets */
+    .nav-link {
+        padding: 12px 16px;
+    }
+    
+    .pagination .page-link {
+        padding: 12px 16px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .table-hover > tbody > tr:hover > td,
+    .table-hover > tbody > tr:hover > th {
+        background-color: transparent;
+    }
+}
+
+/* High DPI/Retina display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    .risk-indicator {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .geo-risk-point {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+}
+
+/* Dark mode media query support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-dark: #0d1117;
+        --bg-secondary: #21262d;
+        --border-color: #30363d;
+    }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .pulse,
+    .alert-item,
+    .anomaly-item.new,
+    .geo-risk-point {
+        animation: none !important;
+    }
+    
+    .card,
+    .btn {
+        transition: none !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .btn,
+    .alert-feed,
+    .toast-container {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        break-inside: avoid;
+    }
+    
+    .text-white {
+        color: #000 !important;
+    }
+    
+    .bg-dark {
+        background: #fff !important;
     }
 }
 
@@ -365,6 +597,124 @@ body {
 .risk-medium { background-color: var(--warning-color); }
 .risk-high { background-color: var(--danger-color); }
 .risk-critical { background-color: #8b0000; }
+
+/* Alert System Styles */
+.alert-feed {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.alert-item {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 8px;
+    animation: alertSlideIn 0.5s ease-out;
+}
+
+.alert-item.critical {
+    background-color: rgba(139, 0, 0, 0.2);
+    border-color: rgba(139, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.3);
+}
+
+@keyframes alertSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Enhanced Chart Containers */
+.chart-view-tabs .btn.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Geographic Map Styles */
+.geo-risk-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.geo-risk-high {
+    background-color: var(--danger-color);
+    box-shadow: 0 0 6px var(--danger-color);
+}
+
+.geo-risk-medium {
+    background-color: var(--warning-color);
+    box-shadow: 0 0 6px var(--warning-color);
+}
+
+.geo-risk-low {
+    background-color: var(--success-color);
+    box-shadow: 0 0 6px var(--success-color);
+}
+
+/* Progress Bars */
+.progress {
+    background-color: var(--bg-secondary);
+}
+
+.progress-bar {
+    transition: width 0.6s ease;
+}
+
+/* Form Range Sliders */
+.form-range {
+    background: transparent;
+}
+
+.form-range::-webkit-slider-track {
+    background: var(--bg-secondary);
+    border-radius: 5px;
+    height: 4px;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+}
+
+/* Risk Velocity Indicators */
+.risk-velocity {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+/* Enterprise Features */
+.enterprise-badge {
+    background: linear-gradient(45deg, #007bff, #6f42c1);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.confidence-indicator {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.confidence-high { background-color: var(--success-color); }
+.confidence-medium { background-color: var(--warning-color); }
+.confidence-low { background-color: var(--danger-color); }
 
 /* Utility classes */
 .text-nowrap {

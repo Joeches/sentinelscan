@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block title %}Enterprise Analytics - SentinelScan{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header with Enterprise Badge -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="text-white mb-2">
+                        <i class="fas fa-chart-bar text-primary me-2"></i>
+                        Enterprise Analytics
+                        <span class="enterprise-badge ms-2">PRO</span>
+                    </h1>
+                    <p class="text-muted">Advanced fraud intelligence and business insights</p>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-light" id="exportData">
+                        <i class="fas fa-download me-1"></i>Export Report
+                    </button>
+                    <button type="button" class="btn btn-outline-light" id="scheduleReport">
+                        <i class="fas fa-clock me-1"></i>Schedule Report
+                    </button>
+                    <button type="button" class="btn btn-primary" id="liveDemo">
+                        <i class="fas fa-play me-1"></i>Live Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Performance Indicators -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Fraud Prevention Savings</h6>
+                            <h3 class="text-success mb-0" id="preventionSavings">$1.2M</h3>
+                            <small class="text-success">+23% this month</small>
+                        </div>
+                        <div class="text-success">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Detection Accuracy</h6>
+                            <h3 class="text-info mb-0" id="detectionAccuracy">98.7%</h3>
+                            <small class="text-info">Industry leading</small>
+                        </div>
+                        <div class="text-info">
+                            <i class="fas fa-bullseye fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">False Positive Rate</h6>
+                            <h3 class="text-warning mb-0" id="falsePositiveRate">0.8%</h3>
+                            <small class="text-success">-45% reduction</small>
+                        </div>
+                        <div class="text-warning">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Response Time</h6>
+                            <h3 class="text-primary mb-0" id="responseTime">47ms</h3>
+                            <small class="text-success">Real-time detection</small>
+                        </div>
+                        <div class="text-primary">
+                            <i class="fas fa-tachometer-alt fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Advanced Analytics Dashboard -->
+    <div class="row mb-4">
+        <!-- Fraud Trend Analysis -->
+        <div class="col-lg-8 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-line-chart text-primary me-2"></i>
+                        Fraud Trend Analysis
+                    </h5>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-light active" id="trendDaily">Daily</button>
+                        <button type="button" class="btn btn-outline-light" id="trendWeekly">Weekly</button>
+                        <button type="button" class="btn btn-outline-light" id="trendMonthly">Monthly</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="fraudTrendChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Heatmap -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-map text-danger me-2"></i>
+                        Global Risk Heatmap
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="riskHeatmap" style="height: 300px; position: relative;">
+                        <canvas id="globalHeatmap" width="300" height="300"></canvas>
+                    </div>
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between text-small">
+                            <span class="text-muted">Risk Level:</span>
+                            <div class="d-flex align-items-center">
+                                <span class="text-success me-2">Low</span>
+                                <div class="risk-gradient me-2"></div>
+                                <span class="text-danger">High</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Machine Learning Insights -->
+    <div class="row mb-4">
+        <div class="col-lg-6 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-robot text-info me-2"></i>
+                        ML Model Performance
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <canvas id="precisionRecallChart" width="200" height="200"></canvas>
+                        </div>
+                        <div class="col-6">
+                            <div class="model-metrics">
+                                <div class="metric-item mb-3">
+                                    <h6 class="text-muted">Precision</h6>
+                                    <div class="progress mb-1">
+                                        <div class="progress-bar bg-success" style="width: 97%"></div>
+                                    </div>
+                                    <small class="text-success">97.3%</small>
+                                </div>
+                                <div class="metric-item mb-3">
+                                    <h6 class="text-muted">Recall</h6>
+                                    <div class="progress mb-1">
+                                        <div class="progress-bar bg-info" style="width: 95%"></div>
+                                    </div>
+                                    <small class="text-info">95.8%</small>
+                                </div>
+                                <div class="metric-item mb-3">
+                                    <h6 class="text-muted">F1-Score</h6>
+                                    <div class="progress mb-1">
+                                        <div class="progress-bar bg-warning" style="width: 96%"></div>
+                                    </div>
+                                    <small class="text-warning">96.5%</small>
+                                </div>
+                                <div class="metric-item">
+                                    <h6 class="text-muted">AUC-ROC</h6>
+                                    <div class="progress mb-1">
+                                        <div class="progress-bar bg-primary" style="width: 99%"></div>
+                                    </div>
+                                    <small class="text-primary">99.1%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Pattern Analysis -->
+        <div class="col-lg-6 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-network-wired text-warning me-2"></i>
+                        Transaction Pattern Analysis
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="patternAnalysisChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enterprise Features -->
+    <div class="row mb-4">
+        <!-- Risk Scoring Engine -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-cog text-primary me-2"></i>
+                        Risk Scoring Engine
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="scoring-engine">
+                        <div class="score-factor mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Transaction Amount</span>
+                                <span class="text-warning">35%</span>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-warning" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div class="score-factor mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Geographic Risk</span>
+                                <span class="text-danger">28%</span>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-danger" style="width: 28%"></div>
+                            </div>
+                        </div>
+                        <div class="score-factor mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">User Behavior</span>
+                                <span class="text-info">22%</span>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-info" style="width: 22%"></div>
+                            </div>
+                        </div>
+                        <div class="score-factor mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Time Pattern</span>
+                                <span class="text-success">15%</span>
+                            </div>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-success" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance Monitoring -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-balance-scale text-success me-2"></i>
+                        Compliance Monitoring
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="compliance-status">
+                        <div class="compliance-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">PCI DSS</span>
+                                <span class="badge bg-success">Compliant</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">GDPR</span>
+                                <span class="badge bg-success">Compliant</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">AML/KYC</span>
+                                <span class="badge bg-success">Compliant</span>
+                            </div>
+                        </div>
+                        <div class="compliance-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">SOX</span>
+                                <span class="badge bg-warning">Pending Review</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <small class="text-muted">Last Audit: Dec 2024</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Performance -->
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-server text-info me-2"></i>
+                        API Performance
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="api-metrics">
+                        <div class="metric mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Uptime</span>
+                                <span class="text-success">99.97%</span>
+                            </div>
+                        </div>
+                        <div class="metric mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Avg Response</span>
+                                <span class="text-info">47ms</span>
+                            </div>
+                        </div>
+                        <div class="metric mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Throughput</span>
+                                <span class="text-primary">15K req/s</span>
+                            </div>
+                        </div>
+                        <div class="metric mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Error Rate</span>
+                                <span class="text-warning">0.03%</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <canvas id="apiPerformanceChart" height="80"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}
