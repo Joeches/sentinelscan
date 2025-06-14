@@ -1,0 +1,137 @@
+SentinelScan - AI-Powered Transaction Anomaly Detector
+Project Title: SentinelScan - AI-Powered Transaction Anomaly Detector
+
+Core Problem: Traditional fraud detection in fintech is reactive and fails to adapt to new, evolving fraud patterns, leading to significant financial losses and eroded user trust. Current systems generate too many false positives and struggle with novel attack vectors.
+
+Target User: Financial institutions, payment processors, and fintech companies seeking to enhance their real-time fraud detection capabilities.
+
+Core Solution (Single Feature Focus): Implement a real-time, AI-driven anomaly detection system for financial transactions. This system will analyze incoming transaction data, identify deviations from normal patterns, and immediately flag suspicious activities as potential fraud.
+
+I. Application Persona & Goal:
+
+You are a sophisticated AI-powered security architect. Your mission is to build an MVP for "SentinelScan," a lean, highly effective, and visually intuitive application that demonstrates the power of AI in real-time financial fraud anomaly detection.
+Goal: To create a functional, robust, and user-friendly MVP that can showcase the core anomaly detection feature and provide a compelling demonstration of its value to potential stakeholders. Prioritize the core functionality and a clean, responsive UI/UX.
+II. Technical Stack & Environment:
+
+Primary Language: Python
+Web Framework: FastAPI (for its performance, async capabilities, and automatic OpenAPI documentation, which is excellent for API-first design).
+Database: MongoDB Atlas (Utilize the M0 Free Tier for the MVP).
+Collections:
+transactions: To store all incoming (simulated) transaction data, including its is_anomaly status.
+anomalies: To store only transactions identified as anomalous, with additional anomaly scores and timestamps.
+AI/ML Library: Scikit-learn (specifically IsolationForest for anomaly detection).
+UI Framework: React (for a modern, interactive, and component-based frontend). Utilize a minimalist UI library like Chakra UI or Tailwind CSS for rapid, clean styling.
+Deployment Target: Replit's integrated deployment environment.
+III. Core Functionality & API Endpoints (Backend - FastAPI):
+
+POST /api/transactions/simulate:
+
+Purpose: Endpoint to receive simulated incoming financial transaction data.
+Request Body: JSON object representing a transaction. Example:
+JSON
+
+{
+  "transaction_id": "TXN_12345",
+  "user_id": "USR_67890",
+  "amount": 150.75,
+  "currency": "USD",
+  "merchant_id": "MER_ABCDE",
+  "transaction_type": "purchase",
+  "location_city": "Lagos",
+  "location_country": "Nigeria",
+  "timestamp": "2025-06-14T21:30:00Z",
+  "device_info": "mobile"
+}
+Logic:
+Receive transaction data.
+Perform basic data validation.
+Feature Engineering: Extract and transform relevant features for the AI model (e.g., normalize amount, one-hot encode categorical features, create time-based features like hour of day). Crucially, handle "cold start" for new users/merchants gracefully by assigning default values or having a strategy for limited initial data.
+Anomaly Detection: Pass engineered features to the pre-loaded IsolationForest model.
+Classification: Determine is_anomaly (True/False) based on the model's decision score and a predefined threshold.
+Database Storage: Store the transaction in the transactions collection. If is_anomaly is True, also store it in the anomalies collection with the anomaly score.
+Response: Return the processed transaction data, including the is_anomaly status and the anomaly score.
+GET /api/anomalies:
+
+Purpose: Retrieve a list of all detected anomalous transactions.
+Query Parameters:
+limit: (Optional) Maximum number of anomalies to return (default: 10).
+skip: (Optional) Number of anomalies to skip (for pagination).
+sort_by: (Optional) Field to sort by (e.g., timestamp, anomaly_score).
+Response: A JSON array of anomalous transaction objects.
+GET /api/dashboard_stats:
+
+Purpose: Provide summary statistics for the UI dashboard.
+Logic:
+Total transactions processed.
+Total anomalous transactions detected.
+Anomaly rate (anomalous / total * 100).
+Potentially, top 5 users/merchants with the most anomalies (for a more advanced MVP).
+Response: JSON object with summary statistics.
+IV. AI Model Requirements & Training Strategy:
+
+Model: Scikit-learn's IsolationForest.
+Initial Model Training (MVP Strategy):
+Implement a simple Python script (train_model.py) that generates a small synthetic dataset of "normal" financial transactions. This dataset should mimic realistic transaction patterns.
+Train the IsolationForest model on this synthetic normal dataset.
+Persist the trained model (e.g., using joblib or pickle) into a file (model.pkl) that the FastAPI application can load at startup.
+Self-correction/Adaptation: The prompt should acknowledge that for a true production system, the model would be continuously retrained on real, labeled data. For the MVP, a pre-trained model on synthetic "normal" data is sufficient to demonstrate anomaly detection.
+V. UI/UX Design (Frontend - React):
+
+Overall Theme: Clean, modern, minimalist, and highly readable. Use a dark mode theme for a security application feel.
+
+Key Pages/Components:
+
+Dashboard/Overview Page (/):
+
+Header: "SentinelScan" logo/title.
+Summary Cards:
+"Total Transactions Processed"
+"Total Anomalies Detected"
+"Anomaly Rate (%)"
+"Simulate Transaction" Section:
+A simple, clean form (or pre-filled button) to send mock transaction data to POST /api/transactions/simulate. This allows for interactive testing.
+Display the response from the API (e.g., "Transaction ID: XXX, Is Anomaly: True/False, Score: Y.YY").
+Live Anomaly Feed (Optional but highly desired for MVP impact): A small, real-time list or table that updates as new anomalies are detected (potentially by polling /api/anomalies every few seconds or using WebSockets if Replit AI can generate that efficiently). Display transaction_id, amount, timestamp, and anomaly_score.
+Anomalies List Page (/anomalies):
+
+Header: "Detected Anomalies"
+Table: A clear, sortable, and paginated table displaying:
+Transaction ID
+User ID
+Amount
+Merchant
+Timestamp
+Anomaly Score (perhaps color-coded for severity - e.g., red for very high anomaly).
+"Details" Button (Optional): For each row, a button that, when clicked, reveals a modal or expands the row to show full transaction details.
+Responsiveness: Ensure the UI is fully responsive and looks good on desktop, tablet, and mobile devices.
+
+Visual Cues: Use subtle animations, clear iconography, and intuitive navigation. Green for normal, Red/Orange for anomalous.
+
+Error Handling: Display user-friendly messages for API errors or validation issues.
+
+VI. Deployment Considerations (Replit Specific):
+
+replit.nix: Ensure correct system dependencies are specified for Python, Node.js (for React), and any other necessary libraries.
+pyproject.toml / requirements.txt: Properly list all Python dependencies (FastAPI, uvicorn, pymongo, scikit-learn, joblib, pandas).
+package.json: Properly list all Node.js/React dependencies.
+Start Script: Configure Replit's .replit file to correctly start both the FastAPI backend and the React frontend (e.g., using a tool like concurrently if running both from a single start command, or separate run commands if Replit supports multiple services).
+Environment Variables: Provide instructions on how to set up MONGO_URI as a Replit Secret.
+VII. Instructions to Replit AI App Builder:
+
+"Build the 'SentinelScan' application from scratch. Focus on the core anomaly detection feature. Develop a FastAPI backend with the specified API endpoints, integrating a joblib-persisted IsolationForest model trained on synthetic normal data. Implement a modern React frontend with a clean, dark-themed UI/UX, featuring a dashboard to simulate transactions and view overall statistics, and a dedicated page to list detected anomalies. Ensure seamless communication between the frontend and backend. Set up MongoDB Atlas (M0 Free Tier) integration. Prioritize code clarity, modularity, and a professional aesthetic. Provide clear instructions on how to run and test the application within Replit, and how to set up the MongoDB Atlas connection string as a Replit Secret."
+
+Justification for Prompt Strength and UI/UX Focus:
+
+Clarity on Core Problem & Solution: Directly states the "why" and "what," guiding the AI.
+Single Feature Focus: Explicitly limits scope for an MVP, preventing feature creep.
+Detailed Technical Stack: Specifies exact frameworks and libraries, reducing AI's guesswork.
+API Endpoint Definition: Provides clear contracts for backend functionality, which is crucial for API-first development.
+AI Model Strategy: Outlines how the AI model should be initially trained for the MVP, acknowledging the need for a synthetic dataset.
+Robust UI/UX Section:
+Overall Theme: Sets the aesthetic tone.
+Specific Components & Pages: Details what should be on each part of the UI.
+User Interaction Points: Describes how users will interact (e.g., "Simulate Transaction" form).
+Data Presentation: Specifies how data should be displayed (tables, summary cards, real-time feed).
+Responsiveness & Visual Cues: Emphasizes quality and intuitiveness.
+Deployment Hints: Guides the AI on Replit-specific configurations.
+Direct Instruction: The final section acts as a concise command to the AI, summarizing the entire build request.
