@@ -1,0 +1,332 @@
+/* SentinelScan Dark Theme Styles */
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --dark-color: #343a40;
+    --light-color: #f8f9fa;
+    --bg-dark: #1a1a1a;
+    --bg-secondary: #2d3436;
+    --border-color: #495057;
+}
+
+/* Body and general styles */
+body {
+    background-color: var(--bg-dark);
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #6c757d;
+}
+
+/* Cards */
+.card {
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Forms */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: var(--bg-secondary);
+    color: #ffffff;
+}
+
+.form-control::placeholder {
+    color: #adb5bd;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+}
+
+.btn-outline-light:hover {
+    background-color: #ffffff;
+    color: var(--dark-color);
+}
+
+/* Navigation */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+
+/* Tables */
+.table-dark {
+    --bs-table-bg: transparent;
+}
+
+.table-dark th {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    font-weight: 600;
+}
+
+.table-dark td {
+    border-color: var(--border-color);
+}
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Badges and indicators */
+.badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.anomaly-score-high {
+    color: var(--danger-color);
+    font-weight: 700;
+}
+
+.anomaly-score-medium {
+    color: var(--warning-color);
+    font-weight: 600;
+}
+
+.anomaly-score-low {
+    color: var(--info-color);
+    font-weight: 500;
+}
+
+/* Statistics cards */
+.stats-card {
+    background: linear-gradient(135deg, var(--bg-dark), var(--bg-secondary));
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+/* Animation for loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--primary-color);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Pulse animation for real-time updates */
+.pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Anomaly feed items */
+.anomaly-item {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.anomaly-item:hover {
+    background-color: rgba(220, 53, 69, 0.15);
+    border-color: rgba(220, 53, 69, 0.5);
+}
+
+.anomaly-item.new {
+    animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Status indicators */
+.status-online {
+    color: var(--success-color);
+}
+
+.status-warning {
+    color: var(--warning-color);
+}
+
+.status-danger {
+    color: var(--danger-color);
+}
+
+/* Modal customizations */
+.modal-content {
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--border-color);
+}
+
+/* Pagination */
+.pagination .page-link {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: #ffffff;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #ffffff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Alert customizations */
+.alert-dark {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Utility classes */
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.border-dashed {
+    border-style: dashed !important;
+}
+
+/* Custom spacing */
+.mt-6 {
+    margin-top: 3.5rem;
+}
+
+.mb-6 {
+    margin-bottom: 3.5rem;
+}
+
+.py-6 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+}
