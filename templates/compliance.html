@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulatory Compliance - SentinelScan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-shield-alt me-2"></i>SentinelScan
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('anomalies_page') }}">Anomalies</a>
+                <a class="nav-link" href="{{ url_for('analytics_page') }}">Analytics</a>
+                <a class="nav-link active" href="{{ url_for('compliance_page') }}">Compliance</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Compliance Overview -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title mb-4">
+                            <i class="fas fa-clipboard-check text-success me-2"></i>
+                            Regulatory Compliance Dashboard
+                        </h2>
+                        <p class="text-muted">Monitor compliance status across PCI DSS, GDPR, AML/KYC, and SOX requirements</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compliance Status Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="compliance-icon text-success mb-3">
+                            <i class="fas fa-credit-card fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">PCI DSS</h5>
+                        <div class="compliance-status text-success">
+                            <i class="fas fa-check-circle"></i> Compliant
+                        </div>
+                        <small class="text-muted">Last audit: June 2025</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="compliance-icon text-success mb-3">
+                            <i class="fas fa-user-shield fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">GDPR</h5>
+                        <div class="compliance-status text-success">
+                            <i class="fas fa-check-circle"></i> Compliant
+                        </div>
+                        <small class="text-muted">Data protection verified</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="compliance-icon text-warning mb-3">
+                            <i class="fas fa-search-dollar fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">AML/KYC</h5>
+                        <div class="compliance-status text-warning">
+                            <i class="fas fa-exclamation-triangle"></i> Review Required
+                        </div>
+                        <small class="text-muted">3 cases pending</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center">
+                        <div class="compliance-icon text-success mb-3">
+                            <i class="fas fa-file-contract fa-2x"></i>
+                        </div>
+                        <h5 class="card-title">SOX</h5>
+                        <div class="compliance-status text-success">
+                            <i class="fas fa-check-circle"></i> Compliant
+                        </div>
+                        <small class="text-muted">Controls validated</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit Trail -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>Audit Trail
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Event Type</th>
+                                        <th>User</th>
+                                        <th>Details</th>
+                                        <th>Risk Level</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="auditTrailTable">
+                                    <tr>
+                                        <td>2025-06-14 21:22:46</td>
+                                        <td><span class="badge bg-danger">High Risk Transaction</span></td>
+                                        <td>USR_FRAUD_002</td>
+                                        <td>$45,000 transfer from Russia - 100% anomaly score</td>
+                                        <td><span class="badge bg-danger">Critical</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2025-06-14 21:22:10</td>
+                                        <td><span class="badge bg-success">Normal Transaction</span></td>
+                                        <td>USR_REGULAR_001</td>
+                                        <td>$85.50 Amazon purchase - Mobile device</td>
+                                        <td><span class="badge bg-success">Low</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2025-06-14 21:20:15</td>
+                                        <td><span class="badge bg-info">System Event</span></td>
+                                        <td>SYSTEM</td>
+                                        <td>ML model retrained - Accuracy: 98.7%</td>
+                                        <td><span class="badge bg-info">Info</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Regulatory Reports -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-download me-2"></i>Generate Reports
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Report Type</label>
+                            <select class="form-select" id="reportType">
+                                <option value="suspicious_activity">Suspicious Activity Report (SAR)</option>
+                                <option value="compliance_summary">Compliance Summary</option>
+                                <option value="audit_trail">Audit Trail Report</option>
+                                <option value="risk_assessment">Risk Assessment</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date Range</label>
+                            <select class="form-select" id="dateRange">
+                                <option value="7">Last 7 days</option>
+                                <option value="30">Last 30 days</option>
+                                <option value="90">Last 90 days</option>
+                                <option value="365">Last year</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="generateReport()">
+                            <i class="fas fa-download me-2"></i>Generate Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bell me-2"></i>Compliance Alerts
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>AML Review Required:</strong> 3 transactions exceed threshold and require manual review within 24 hours.
+                        </div>
+                        <div class="alert alert-info" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Scheduled Audit:</strong> PCI DSS quarterly assessment due in 15 days.
+                        </div>
+                        <div class="alert alert-success" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>GDPR Compliant:</strong> All data retention policies are being followed.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Risk Scoring Configuration -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h5 class="mb-0">
+                            <i class="fas fa-sliders-h me-2"></i>Risk Scoring Configuration
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">High Risk Threshold</label>
+                                <input type="range" class="form-range" min="0.7" max="1.0" step="0.01" value="0.85" id="highRiskThreshold">
+                                <div class="text-center text-muted">85%</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Medium Risk Threshold</label>
+                                <input type="range" class="form-range" min="0.4" max="0.8" step="0.01" value="0.65" id="mediumRiskThreshold">
+                                <div class="text-center text-muted">65%</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Alert Sensitivity</label>
+                                <select class="form-select" id="alertSensitivity">
+                                    <option value="high">High (More alerts)</option>
+                                    <option value="medium" selected>Medium (Balanced)</option>
+                                    <option value="low">Low (Fewer alerts)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-success" onclick="updateRiskSettings()">
+                                <i class="fas fa-save me-2"></i>Save Configuration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const dateRange = document.getElementById('dateRange').value;
+            
+            // Simulate report generation
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed top-0 end-0 p-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `
+                <div class="toast show" role="alert">
+                    <div class="toast-header">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <strong class="me-auto">Report Generated</strong>
+                    </div>
+                    <div class="toast-body">
+                        ${reportType.replace('_', ' ').toUpperCase()} report for last ${dateRange} days has been generated and is ready for download.
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
+        }
+
+        function updateRiskSettings() {
+            const highRisk = document.getElementById('highRiskThreshold').value;
+            const mediumRisk = document.getElementById('mediumRiskThreshold').value;
+            const sensitivity = document.getElementById('alertSensitivity').value;
+            
+            // Simulate settings update
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed top-0 end-0 p-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `
+                <div class="toast show" role="alert">
+                    <div class="toast-header">
+                        <i class="fas fa-cog text-primary me-2"></i>
+                        <strong class="me-auto">Settings Updated</strong>
+                    </div>
+                    <div class="toast-body">
+                        Risk scoring configuration has been updated successfully.
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Update threshold display values
+        document.getElementById('highRiskThreshold').addEventListener('input', function() {
+            this.nextElementSibling.textContent = Math.round(this.value * 100) + '%';
+        });
+
+        document.getElementById('mediumRiskThreshold').addEventListener('input', function() {
+            this.nextElementSibling.textContent = Math.round(this.value * 100) + '%';
+        });
+    </script>
+</body>
+</html>
