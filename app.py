@@ -179,7 +179,7 @@ def simulate_transaction():
         is_anomaly, anomaly_score = detect_anomaly(transaction_data)
         
         # Add anomaly information
-        transaction_data['is_anomaly'] = is_anomaly
+        transaction_data['is_anomaly'] = bool(is_anomaly)
         transaction_data['anomaly_score'] = float(anomaly_score)
         transaction_data['processed_at'] = datetime.utcnow().isoformat() + 'Z'
         
