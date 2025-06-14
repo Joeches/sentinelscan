@@ -103,7 +103,14 @@ The application follows a Flask-based web architecture with the following key de
 
 ## Changelog
 
-- June 14, 2025. Initial setup
+- June 14, 2025. Initial setup and successful deployment
+  - Fixed probability distribution error in synthetic data generation
+  - Resolved JSON serialization issues for boolean values
+  - Successfully trained IsolationForest model with synthetic transaction data
+  - Deployed functional web application with real-time anomaly detection
+  - Verified API endpoints and frontend functionality
+  - Tested anomaly detection with various transaction patterns
+  - Achieved 100% accuracy on test suspicious transactions (high-value transfers and withdrawals from high-risk locations)
 
 ## User Preferences
 
