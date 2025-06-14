@@ -250,6 +250,28 @@ def get_dashboard_stats():
         logging.error(f"Error retrieving dashboard stats: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
+@app.route('/api/transactions')
+def get_transactions():
+    """Get all transactions for visualization"""
+    try:
+        limit = request.args.get('limit', 50, type=int)
+        
+        # Sort transactions by processed time, most recent first
+        sorted_transactions = sorted(
+            transactions_db, 
+            key=lambda x: x.get('processed_at', ''), 
+            reverse=True
+        )[:limit]
+        
+        return jsonify({
+            'transactions': sorted_transactions,
+            'total': len(transactions_db)
+        }), 200
+        
+    except Exception as e:
+        logging.error(f"Error retrieving transactions: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 # Initialize model on startup
 load_model()
 

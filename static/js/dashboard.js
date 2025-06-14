@@ -4,12 +4,17 @@ class Dashboard {
     constructor() {
         this.refreshInterval = null;
         this.autoRefreshEnabled = false;
+        this.riskDistributionChart = null;
+        this.riskTimelineChart = null;
+        this.riskMeter = null;
+        this.transactionData = [];
         this.init();
     }
 
     init() {
         this.loadDashboardStats();
         this.setupEventListeners();
+        this.initializeCharts();
         this.startAutoRefresh();
         this.generateRandomTransactionData();
     }
@@ -138,6 +143,10 @@ class Dashboard {
         if (result.is_anomaly) {
             this.addToAnomalyFeed(result);
         }
+
+        // Update transaction data and visualizations
+        this.transactionData.push(result);
+        this.updateRiskVisualizations(this.transactionData);
     }
 
     addToAnomalyFeed(anomaly) {
@@ -196,9 +205,26 @@ class Dashboard {
 
                 // Load recent anomalies into feed
                 this.loadRecentAnomalies(stats.recent_anomalies);
+                
+                // Load all transactions for visualizations
+                await this.loadTransactionData();
             }
         } catch (error) {
             console.error('Error loading dashboard stats:', error);
+        }
+    }
+
+    async loadTransactionData() {
+        try {
+            const response = await fetch('/api/transactions?limit=50');
+            const data = await response.json();
+
+            if (response.ok) {
+                this.transactionData = data.transactions;
+                this.updateRiskVisualizations(this.transactionData);
+            }
+        } catch (error) {
+            console.error('Error loading transaction data:', error);
         }
     }
 
@@ -230,6 +256,240 @@ class Dashboard {
         this.refreshInterval = setInterval(() => {
             this.loadDashboardStats();
         }, 5000); // Refresh every 5 seconds
+    }
+
+    initializeCharts() {
+        this.initializeRiskDistributionChart();
+        this.initializeRiskTimelineChart();
+        this.initializeRiskMeter();
+    }
+
+    initializeRiskDistributionChart() {
+        const ctx = document.getElementById('riskDistributionChart').getContext('2d');
+        this.riskDistributionChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Low Risk', 'Medium Risk', 'High Risk', 'Critical Risk'],
+                datasets: [{
+                    data: [0, 0, 0, 0],
+                    backgroundColor: [
+                        '#28a745',  // Low - Green
+                        '#ffc107',  // Medium - Yellow
+                        '#dc3545',  // High - Red
+                        '#8b0000'   // Critical - Dark Red
+                    ],
+                    borderColor: '#343a40',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Risk Distribution',
+                        color: '#ffffff',
+                        font: { size: 14 }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#ffffff',
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    initializeRiskTimelineChart() {
+        const ctx = document.getElementById('riskTimelineChart').getContext('2d');
+        this.riskTimelineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Average Risk Score',
+                    data: [],
+                    borderColor: '#007bff',
+                    backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Risk Trend Over Time',
+                        color: '#ffffff',
+                        font: { size: 14 }
+                    },
+                    legend: {
+                        labels: { color: '#ffffff' }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: '#ffffff' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 1,
+                        ticks: { 
+                            color: '#ffffff',
+                            callback: function(value) {
+                                return (value * 100).toFixed(0) + '%';
+                            }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                }
+            }
+        });
+    }
+
+    initializeRiskMeter() {
+        const canvas = document.getElementById('riskMeter');
+        const ctx = canvas.getContext('2d');
+        this.drawRiskMeter(ctx, 0);
+    }
+
+    drawRiskMeter(ctx, riskValue) {
+        const centerX = 100;
+        const centerY = 100;
+        const radius = 80;
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, 200, 200);
+        
+        // Draw background arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, Math.PI, 2 * Math.PI);
+        ctx.lineWidth = 15;
+        ctx.strokeStyle = '#343a40';
+        ctx.stroke();
+        
+        // Risk level colors and positions
+        const riskLevels = [
+            { color: '#28a745', start: 0, end: 0.25 },      // Low
+            { color: '#ffc107', start: 0.25, end: 0.5 },   // Medium
+            { color: '#dc3545', start: 0.5, end: 0.75 },   // High
+            { color: '#8b0000', start: 0.75, end: 1 }      // Critical
+        ];
+        
+        // Draw colored segments
+        riskLevels.forEach(level => {
+            ctx.beginPath();
+            const startAngle = Math.PI + (level.start * Math.PI);
+            const endAngle = Math.PI + (level.end * Math.PI);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.lineWidth = 15;
+            ctx.strokeStyle = level.color;
+            ctx.stroke();
+        });
+        
+        // Draw needle
+        const needleAngle = Math.PI + (riskValue * Math.PI);
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        const needleX = centerX + (radius - 20) * Math.cos(needleAngle);
+        const needleY = centerY + (radius - 20) * Math.sin(needleAngle);
+        ctx.lineTo(needleX, needleY);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+        
+        // Draw center circle
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+    }
+
+    updateRiskVisualizations(transactions) {
+        this.updateRiskDistribution(transactions);
+        this.updateRiskTimeline(transactions);
+        this.updateRiskMeter(transactions);
+    }
+
+    updateRiskDistribution(transactions) {
+        const distribution = [0, 0, 0, 0]; // Low, Medium, High, Critical
+        
+        transactions.forEach(transaction => {
+            const score = transaction.anomaly_score;
+            if (score < 0.25) distribution[0]++;
+            else if (score < 0.5) distribution[1]++;
+            else if (score < 0.75) distribution[2]++;
+            else distribution[3]++;
+        });
+        
+        this.riskDistributionChart.data.datasets[0].data = distribution;
+        this.riskDistributionChart.update();
+    }
+
+    updateRiskTimeline(transactions) {
+        const timeGroups = {};
+        
+        transactions.forEach(transaction => {
+            const time = new Date(transaction.processed_at);
+            const timeKey = time.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            if (!timeGroups[timeKey]) {
+                timeGroups[timeKey] = [];
+            }
+            timeGroups[timeKey].push(transaction.anomaly_score);
+        });
+        
+        const labels = Object.keys(timeGroups).slice(-10);
+        const data = labels.map(time => {
+            const scores = timeGroups[time];
+            return scores.reduce((sum, score) => sum + score, 0) / scores.length;
+        });
+        
+        this.riskTimelineChart.data.labels = labels;
+        this.riskTimelineChart.data.datasets[0].data = data;
+        this.riskTimelineChart.update();
+    }
+
+    updateRiskMeter(transactions) {
+        if (transactions.length === 0) {
+            this.drawRiskMeter(document.getElementById('riskMeter').getContext('2d'), 0);
+            this.updateRiskLevelText(0);
+            return;
+        }
+        
+        const avgRisk = transactions.reduce((sum, t) => sum + t.anomaly_score, 0) / transactions.length;
+        this.drawRiskMeter(document.getElementById('riskMeter').getContext('2d'), avgRisk);
+        this.updateRiskLevelText(avgRisk);
+    }
+
+    updateRiskLevelText(riskValue) {
+        const riskLevelElement = document.getElementById('riskLevelText');
+        
+        if (riskValue < 0.25) {
+            riskLevelElement.textContent = 'LOW';
+            riskLevelElement.className = 'risk-level-low';
+        } else if (riskValue < 0.5) {
+            riskLevelElement.textContent = 'MEDIUM';
+            riskLevelElement.className = 'risk-level-medium';
+        } else if (riskValue < 0.75) {
+            riskLevelElement.textContent = 'HIGH';
+            riskLevelElement.className = 'risk-level-high';
+        } else {
+            riskLevelElement.textContent = 'CRITICAL';
+            riskLevelElement.className = 'risk-level-critical';
+        }
     }
 
     showToast(message, type = 'info') {

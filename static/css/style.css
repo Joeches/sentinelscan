@@ -304,6 +304,68 @@ body {
     }
 }
 
+/* Risk Visualization Styles */
+.risk-meter-container {
+    position: relative;
+    display: inline-block;
+}
+
+.risk-level-low {
+    color: var(--success-color) !important;
+}
+
+.risk-level-medium {
+    color: var(--warning-color) !important;
+}
+
+.risk-level-high {
+    color: var(--danger-color) !important;
+}
+
+.risk-level-critical {
+    color: #8b0000 !important;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    font-size: 0.875rem;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.risk-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.risk-low { background-color: var(--success-color); }
+.risk-medium { background-color: var(--warning-color); }
+.risk-high { background-color: var(--danger-color); }
+.risk-critical { background-color: #8b0000; }
+
 /* Utility classes */
 .text-nowrap {
     white-space: nowrap;

@@ -84,6 +84,50 @@
         </div>
     </div>
 
+    <!-- Risk Visualization Charts -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mb-4">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-chart-line text-primary me-2"></i>
+                        Real-time Risk Visualization
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <canvas id="riskDistributionChart" width="400" height="300"></canvas>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <canvas id="riskTimelineChart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mb-4">
+            <div class="card bg-dark border-secondary h-100">
+                <div class="card-header border-secondary">
+                    <h5 class="text-white mb-0">
+                        <i class="fas fa-thermometer-half text-warning me-2"></i>
+                        Risk Meter
+                    </h5>
+                </div>
+                <div class="card-body d-flex align-items-center justify-content-center">
+                    <div class="risk-meter-container">
+                        <canvas id="riskMeter" width="200" height="200"></canvas>
+                        <div class="text-center mt-3">
+                            <h6 class="text-muted">Current Risk Level</h6>
+                            <h4 id="riskLevelText" class="text-success">LOW</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Transaction Simulation and Live Feed -->
     <div class="row">
         <!-- Transaction Simulation -->
