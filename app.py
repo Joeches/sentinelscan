@@ -46,7 +46,7 @@ def train_and_save_model():
     # Create synthetic normal transactions
     data = {
         'amount': np.random.lognormal(mean=4, sigma=1.5, size=n_samples),
-        'hour': np.random.choice(range(24), size=n_samples, p=[0.02, 0.01, 0.01, 0.01, 0.01, 0.02, 0.03, 0.05, 0.06, 0.07, 0.08, 0.09, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03, 0.03, 0.03, 0.03, 0.02, 0.02]),
+        'hour': np.random.choice(range(24), size=n_samples, p=[0.02, 0.01, 0.01, 0.01, 0.01, 0.02, 0.03, 0.05, 0.06, 0.07, 0.08, 0.09, 0.09, 0.08, 0.07, 0.06, 0.05, 0.04, 0.03, 0.03, 0.03, 0.03, 0.02, 0.01]),
         'transaction_type': np.random.choice(['purchase', 'transfer', 'withdrawal', 'deposit'], size=n_samples, p=[0.6, 0.2, 0.15, 0.05]),
         'device_info': np.random.choice(['mobile', 'desktop', 'tablet'], size=n_samples, p=[0.7, 0.25, 0.05]),
         'location_country': np.random.choice(['USA', 'UK', 'Canada', 'Germany', 'France'], size=n_samples, p=[0.4, 0.2, 0.15, 0.15, 0.1])
