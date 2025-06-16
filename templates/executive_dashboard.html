@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelScan Elite - Executive Command Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0c1426 0%, #1a1f3a 50%, #2d1b69 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hologram-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hologram-effect::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            animation: hologram-scan 3s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes hologram-scan {
+            0% { transform: translateX(-100%) translateY(-100%); }
+            100% { transform: translateX(100%) translateY(100%); }
+        }
+        
+        .quantum-glow {
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3);
+            animation: quantum-pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes quantum-pulse {
+            0% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.5); }
+        }
+        
+        .neural-network {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.3);
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .ai-prediction {
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.2) 0%, rgba(128, 0, 255, 0.2) 100%);
+            border: 2px solid rgba(255, 0, 128, 0.5);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        
+        .threat-level-critical {
+            background: linear-gradient(45deg, #ff0040, #ff4080);
+            animation: critical-alert 1s ease-in-out infinite alternate;
+        }
+        
+        @keyframes critical-alert {
+            0% { box-shadow: 0 0 20px rgba(255, 0, 64, 0.8); }
+            100% { box-shadow: 0 0 40px rgba(255, 0, 64, 1); }
+        }
+        
+        .global-map {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .risk-heatpoint {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse-risk 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-risk {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .quantum-button {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .quantum-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+        }
+        
+        .ai-insights {
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.1) 0%, rgba(0, 128, 255, 0.1) 100%);
+            border-left: 4px solid #00ff80;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .executive-nav {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item {
+            position: relative;
+            margin: 0 1rem;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            font-weight: 500;
+            padding: 1rem 1.5rem !important;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #00ffff !important;
+            background: rgba(0, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <canvas class="neural-network" id="neuralNetwork"></canvas>
+    
+    <!-- Executive Navigation -->
+    <nav class="navbar navbar-expand-lg executive-nav fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span class="fw-bold">SentinelScan</span>
+                <span class="badge bg-gradient" style="background: linear-gradient(45deg, #00ffff, #ff00ff);">ELITE</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="#"><i class="fas fa-brain me-2"></i>AI Command</a>
+                <a class="nav-link" href="#"><i class="fas fa-globe me-2"></i>Global Threat</a>
+                <a class="nav-link" href="#"><i class="fas fa-rocket me-2"></i>Quantum Shield</a>
+                <a class="nav-link" href="#"><i class="fas fa-crown me-2"></i>Executive Suite</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-5 pt-4">
+        <!-- Executive Summary -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="glass-card hologram-effect p-4 quantum-glow">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="text-white mb-3">
+                                <i class="fas fa-brain text-info me-3"></i>
+                                AI-Powered Executive Command Center
+                            </h1>
+                            <p class="text-light fs-5 mb-0">
+                                Real-time global threat intelligence with quantum-enhanced fraud prevention
+                            </p>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="metric-value">99.87%</div>
+                            <div class="text-light">Threat Detection Accuracy</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Predictions & Critical Metrics -->
+        <div class="row mb-4">
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <i class="fas fa-brain fa-3x text-info mb-3"></i>
+                    <div class="metric-value">$847M</div>
+                    <div class="text-light">Fraud Prevented Today</div>
+                    <div class="ai-insights mt-3">
+                        <small class="text-success">
+                            <i class="fas fa-arrow-up me-1"></i>
+                            AI predicts 23% increase in prevention tomorrow
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <i class="fas fa-shield-virus fa-3x text-warning mb-3"></i>
+                    <div class="metric-value">2.3ms</div>
+                    <div class="text-light">Quantum Response Time</div>
+                    <div class="ai-insights mt-3">
+                        <small class="text-info">
+                            <i class="fas fa-bolt me-1"></i>
+                            Quantum acceleration: 95% faster than legacy systems
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="metric-card threat-level-critical">
+                    <i class="fas fa-exclamation-triangle fa-3x text-white mb-3"></i>
+                    <div class="metric-value text-white">47</div>
+                    <div class="text-white">Active Global Threats</div>
+                    <div class="ai-insights mt-3 bg-dark">
+                        <small class="text-danger">
+                            <i class="fas fa-eye me-1"></i>
+                            AI monitoring 847 suspicious patterns
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-3">
+                <div class="metric-card">
+                    <i class="fas fa-globe-americas fa-3x text-success mb-3"></i>
+                    <div class="metric-value">156</div>
+                    <div class="text-light">Protected Countries</div>
+                    <div class="ai-insights mt-3">
+                        <small class="text-success">
+                            <i class="fas fa-network-wired me-1"></i>
+                            Global network effect: 99.2% coverage
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Predictions Panel -->
+        <div class="row mb-4">
+            <div class="col-lg-8">
+                <div class="glass-card p-4">
+                    <h3 class="text-white mb-4">
+                        <i class="fas fa-crystal-ball text-info me-2"></i>
+                        Quantum AI Threat Predictions
+                    </h3>
+                    <div class="ai-prediction">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="text-warning">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    High-Priority Alert
+                                </h5>
+                                <p class="text-light mb-2">
+                                    AI detected coordinated attack pattern targeting cryptocurrency exchanges
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-danger">Confidence: 94.7%</span>
+                                    <span class="badge bg-info">ETA: 4.2 hours</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <canvas id="threatPredictionChart" width="300" height="150"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-prediction">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h5 class="text-info">
+                                    <i class="fas fa-brain me-2"></i>
+                                    Neural Network Insights
+                                </h5>
+                                <ul class="text-light mb-0">
+                                    <li>Behavioral biometrics detected 23 account takeover attempts</li>
+                                    <li>Quantum encryption prevented 156 advanced persistent threats</li>
+                                    <li>Federated learning improved accuracy by 0.3% across 847 institutions</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="metric-value text-info">847</div>
+                                <small class="text-light">Connected Institutions</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="glass-card p-4">
+                    <h4 class="text-white mb-4">
+                        <i class="fas fa-globe text-success me-2"></i>
+                        Global Threat Map
+                    </h4>
+                    <div class="global-map" style="height: 300px; position: relative;">
+                        <canvas id="globalThreatMap" width="100%" height="100%"></canvas>
+                        <!-- Dynamic threat points -->
+                        <div class="risk-heatpoint" style="top: 20%; left: 25%; background: #ff0040;"></div>
+                        <div class="risk-heatpoint" style="top: 35%; left: 45%; background: #ff8000;"></div>
+                        <div class="risk-heatpoint" style="top: 50%; left: 70%; background: #ffff00;"></div>
+                        <div class="risk-heatpoint" style="top: 65%; left: 15%; background: #ff0040;"></div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-light">
+                            <span class="badge" style="background: #ff0040;">Critical</span>
+                            <span class="badge" style="background: #ff8000;">High</span>
+                            <span class="badge" style="background: #ffff00; color: #000;">Medium</span>
+                            Real-time global threat intelligence
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quantum Analytics Dashboard -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="text-white">
+                            <i class="fas fa-atom text-info me-2"></i>
+                            Quantum-Enhanced Analytics Suite
+                        </h3>
+                        <div>
+                            <button class="quantum-button me-2">
+                                <i class="fas fa-download me-2"></i>Export Intel
+                            </button>
+                            <button class="quantum-button">
+                                <i class="fas fa-rocket me-2"></i>Deploy Countermeasures
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="glass-card p-3 mb-3">
+                                <h5 class="text-info">Behavioral Biometrics Engine</h5>
+                                <canvas id="biometricsChart" width="100%" height="200"></canvas>
+                                <div class="mt-2">
+                                    <small class="text-success">
+                                        <i class="fas fa-fingerprint me-1"></i>
+                                        99.96% keystroke accuracy | 2.1ms response
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="glass-card p-3 mb-3">
+                                <h5 class="text-warning">Fraud Velocity Tracking</h5>
+                                <canvas id="velocityChart" width="100%" height="200"></canvas>
+                                <div class="mt-2">
+                                    <small class="text-warning">
+                                        <i class="fas fa-tachometer-alt me-1"></i>
+                                        Real-time cross-channel monitoring
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="glass-card p-3 mb-3">
+                                <h5 class="text-success">Quantum Network Effect</h5>
+                                <canvas id="networkChart" width="100%" height="200"></canvas>
+                                <div class="mt-2">
+                                    <small class="text-success">
+                                        <i class="fas fa-network-wired me-1"></i>
+                                        847 institutions sharing threat intelligence
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Executive Actions Panel -->
+        <div class="row">
+            <div class="col-12">
+                <div class="glass-card p-4">
+                    <h3 class="text-white mb-4">
+                        <i class="fas fa-crown text-warning me-2"></i>
+                        Executive Command Actions
+                    </h3>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <button class="quantum-button w-100 py-3">
+                                <i class="fas fa-shield-alt d-block fa-2x mb-2"></i>
+                                Activate Global Shield
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <button class="quantum-button w-100 py-3">
+                                <i class="fas fa-brain d-block fa-2x mb-2"></i>
+                                Deploy AI Counterstrike
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <button class="quantum-button w-100 py-3">
+                                <i class="fas fa-satellite d-block fa-2x mb-2"></i>
+                                Launch Quantum Scan
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <button class="quantum-button w-100 py-3">
+                                <i class="fas fa-infinity d-block fa-2x mb-2"></i>
+                                Initiate Neural Learning
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/executive_dashboard.js') }}"></script>
+</body>
+</html>
