@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelScan - Investor Pitch Deck</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+            position: relative;
+        }
+        
+        .slide-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+        }
+        
+        .title-slide {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+        }
+        
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+        }
+        
+        .valuation-highlight {
+            font-size: 6rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+        
+        .metric-box {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ffff;
+        }
+        
+        .slide-nav {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 10px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-dot.active {
+            background: #00ffff;
+            transform: scale(1.5);
+        }
+        
+        .chart-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .premium-badge {
+            background: linear-gradient(45deg, #ffd700, #ff8c00);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        
+        .competition-table {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .competition-table th {
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .competition-table td {
+            padding: 1rem;
+            text-align: center;
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .winner {
+            background: rgba(0, 255, 0, 0.2);
+            font-weight: bold;
+        }
+        
+        .animated-counter {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Slide Navigation -->
+    <div class="slide-nav">
+        <div class="nav-dot active" data-slide="0"></div>
+        <div class="nav-dot" data-slide="1"></div>
+        <div class="nav-dot" data-slide="2"></div>
+        <div class="nav-dot" data-slide="3"></div>
+        <div class="nav-dot" data-slide="4"></div>
+        <div class="nav-dot" data-slide="5"></div>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide" id="slide-0">
+        <div class="container">
+            <div class="slide-content title-slide">
+                <div class="hero-title">SentinelScan</div>
+                <h2 class="text-white mb-4">AI-Powered Financial Fraud Detection Platform</h2>
+                <p class="text-light fs-4 mb-4">Revolutionary quantum-enhanced security for the financial services industry</p>
+                <div class="valuation-highlight mb-4">$500M+</div>
+                <p class="text-warning fs-3">Strategic Acquisition Opportunity</p>
+                <div class="row mt-5">
+                    <div class="col-md-4">
+                        <div class="premium-badge">98.7% Accuracy</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="premium-badge">47ms Response</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="premium-badge">847 Institutions</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 2: Market Opportunity -->
+    <div class="slide" id="slide-1">
+        <div class="container">
+            <div class="slide-content">
+                <h1 class="text-white text-center mb-5">Massive Market Opportunity</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="metric-box">
+                            <div class="metric-value">$85.4B</div>
+                            <h4 class="text-white">Global Market Size</h4>
+                            <p class="text-light">by 2030 (20.3% CAGR)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-box">
+                            <div class="metric-value">$48B</div>
+                            <h4 class="text-white">Annual Fraud Losses</h4>
+                            <p class="text-light">Prevention opportunity</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-box">
+                            <div class="metric-value">5,000+</div>
+                            <h4 class="text-white">Target Institutions</h4>
+                            <p class="text-light">Banks & fintech companies</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-container mt-5">
+                    <canvas id="marketChart" width="100%" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Competitive Advantage -->
+    <div class="slide" id="slide-2">
+        <div class="container">
+            <div class="slide-content">
+                <h1 class="text-white text-center mb-5">Unmatched Competitive Advantage</h1>
+                <div class="competition-table">
+                    <table class="table table-dark mb-0">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>SentinelScan</th>
+                                <th>Featurespace</th>
+                                <th>DataVisor</th>
+                                <th>Legacy Systems</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Detection Accuracy</td>
+                                <td class="winner">98.7%</td>
+                                <td>92.3%</td>
+                                <td>89.1%</td>
+                                <td>85.2%</td>
+                            </tr>
+                            <tr>
+                                <td>Response Time</td>
+                                <td class="winner">47ms</td>
+                                <td>234ms</td>
+                                <td>456ms</td>
+                                <td>1,200ms</td>
+                            </tr>
+                            <tr>
+                                <td>Compliance Suite</td>
+                                <td class="winner">Complete</td>
+                                <td>Partial</td>
+                                <td>Basic</td>
+                                <td>Manual</td>
+                            </tr>
+                            <tr>
+                                <td>Quantum Ready</td>
+                                <td class="winner">Yes</td>
+                                <td>No</td>
+                                <td>No</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>Global Network</td>
+                                <td class="winner">847 Nodes</td>
+                                <td>234 Nodes</td>
+                                <td>156 Nodes</td>
+                                <td>Local Only</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-6">
+                        <h4 class="text-success">Key Differentiators</h4>
+                        <ul class="text-light fs-5">
+                            <li>Quantum-enhanced processing architecture</li>
+                            <li>Behavioral biometrics integration</li>
+                            <li>Real-time global threat intelligence</li>
+                            <li>Automated regulatory compliance</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4 class="text-warning">Market Barriers</h4>
+                        <ul class="text-light fs-5">
+                            <li>3+ years to replicate our AI technology</li>
+                            <li>$50M+ investment required</li>
+                            <li>Regulatory approval complexity</li>
+                            <li>Network effect advantage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Financial Projections -->
+    <div class="slide" id="slide-3">
+        <div class="container">
+            <div class="slide-content">
+                <h1 class="text-white text-center mb-5">Financial Projections & ROI</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h4 class="text-white text-center">Revenue Growth</h4>
+                            <canvas id="revenueChart" width="100%" height="300"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <h4 class="text-white text-center">Client Acquisition</h4>
+                            <canvas id="clientChart" width="100%" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="metric-box">
+                            <div class="animated-counter" id="revenue-counter">$0M</div>
+                            <h5 class="text-white">Year 3 Revenue</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-box">
+                            <div class="animated-counter" id="clients-counter">0</div>
+                            <h5 class="text-white">Enterprise Clients</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-box">
+                            <div class="animated-counter" id="saved-counter">$0B</div>
+                            <h5 class="text-white">Fraud Prevented</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-box">
+                            <div class="animated-counter" id="margin-counter">0%</div>
+                            <h5 class="text-white">Gross Margin</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Acquisition Interest -->
+    <div class="slide" id="slide-4">
+        <div class="container">
+            <div class="slide-content">
+                <h1 class="text-white text-center mb-5">Strategic Acquisition Interest</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="metric-box" style="background: rgba(0, 255, 0, 0.1); border-color: #00ff80;">
+                            <h3 class="text-success">Microsoft</h3>
+                            <div class="metric-value text-success">$500-800M</div>
+                            <p class="text-light">Azure Security Integration</p>
+                            <small class="text-muted">Strategic technology acquisition for cloud security dominance</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="metric-box" style="background: rgba(255, 215, 0, 0.1); border-color: #ffd700;">
+                            <h3 class="text-warning">JPMorgan Chase</h3>
+                            <div class="metric-value text-warning">$300-500M</div>
+                            <p class="text-light">Enterprise Banking Platform</p>
+                            <small class="text-muted">Core fraud prevention infrastructure enhancement</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="metric-box" style="background: rgba(0, 128, 255, 0.1); border-color: #0080ff;">
+                            <h3 class="text-info">PayPal</h3>
+                            <div class="metric-value text-info">$400-600M</div>
+                            <p class="text-light">Payment Security Revolution</p>
+                            <small class="text-muted">Next-generation fraud prevention for digital payments</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="metric-box" style="background: rgba(255, 0, 128, 0.1); border-color: #ff0080;">
+                            <h3 class="text-danger">Stripe</h3>
+                            <div class="metric-value text-danger">$200-400M</div>
+                            <p class="text-light">Fintech Platform Enhancement</p>
+                            <small class="text-muted">Advanced fraud detection for global payment processing</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-5">
+                    <h3 class="text-white">Investment Timeline</h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="premium-badge">Q1 2025: Due Diligence</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="premium-badge">Q2 2025: Term Sheets</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="premium-badge">Q3 2025: Closing</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Call to Action -->
+    <div class="slide" id="slide-5">
+        <div class="container">
+            <div class="slide-content title-slide">
+                <h1 class="text-white mb-4">Ready for Strategic Partnership</h1>
+                <p class="text-light fs-3 mb-5">Join the future of financial security</p>
+                <div class="valuation-highlight mb-4">$500M+</div>
+                <p class="text-warning fs-4 mb-5">Enterprise-grade platform with proven technology and massive market opportunity</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="metric-box">
+                            <i class="fas fa-handshake fa-3x text-success mb-3"></i>
+                            <h4 class="text-white">Strategic Acquisition</h4>
+                            <p class="text-light">Technology and talent acquisition</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-box">
+                            <i class="fas fa-rocket fa-3x text-info mb-3"></i>
+                            <h4 class="text-white">Market Leadership</h4>
+                            <p class="text-light">Dominate fraud prevention market</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="metric-box">
+                            <i class="fas fa-crown fa-3x text-warning mb-3"></i>
+                            <h4 class="text-white">Competitive Moat</h4>
+                            <p class="text-light">Quantum-ready architecture</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <button class="btn btn-success btn-lg me-3" style="padding: 15px 40px; font-size: 1.2rem;">
+                        <i class="fas fa-calendar me-2"></i>Schedule Due Diligence
+                    </button>
+                    <button class="btn btn-warning btn-lg" style="padding: 15px 40px; font-size: 1.2rem;">
+                        <i class="fas fa-download me-2"></i>Download Data Room
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/investor_presentation.js') }}"></script>
+</body>
+</html>
